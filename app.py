@@ -1,3 +1,4 @@
+from bling_api import consultar_estoque
 import streamlit as st
 import pandas as pd
 
@@ -22,3 +23,9 @@ if estoque_file and vendas_file:
 
     csv = df_estoque.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Baixar planilha de reposição", csv, file_name="reposicao.csv", mime="text/csv")
+st.subheader("🔗 Conexão com Bling (estoque atual)")
+bling_api_key = st.text_input("Insira sua chave de API do Bling", type="password")
+if bling_api_key and st.button("🔄 Buscar estoque do Bling"):
+    df_estoque = consultar_estoque(bling_api_key)
+    st.success("Estoque carregado com sucesso!")
+    st.dataframe(df_estoque)
